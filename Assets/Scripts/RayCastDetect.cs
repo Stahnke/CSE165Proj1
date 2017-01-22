@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class RayCastDetect : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+	public void Launch() {
 
         if (Physics.Raycast(transform.position, Vector3.forward, 100))
             print("There is something in front of the object!");
