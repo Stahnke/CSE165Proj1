@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestInput : MonoBehaviour {
+public class InputManager : MonoBehaviour {
 
     public GameObject cannonBallLauncher;
     public GameObject rayCaster;
