@@ -5,71 +5,85 @@ using UnityEngine;
 public class InputManager : MonoBehaviour {
 
     public GameObject cannonBallLauncher;
+    public GameObject laserLauncher;
     public GameObject rayCaster;
+    public GameObject BrickSpawner;
+
     private int mode = 0;
 
     //Consts
     private const int NORMAL_MODE = 0;
     private const int LASER_MODE = 1;
     private const int CANNON_MODE = 2;
-    private const int MAX = 2;
+
+    private bool reset;
+    private bool switched;
 
     private IEnumerator dwellRoutine;
 
     //init
     private void Start()
     {
-       rayCaster.SetActive(false);
+        reset = false;
+        laserLauncher.SetActive(false);
 
         dwellRoutine = Dwell();
         StartCoroutine(dwellRoutine);
     }
 
-	//Keyboard debug
-	void Update () {
-		if(Input.GetKeyDown(KeyCode.Space))
-        {
-            Launch();
-        }
-
-        if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            switchMode();
-        }
-	}
-
     //Launch something
     void Launch()
     {
-        //Laser mode
-        if (mode == LASER_MODE)
+        //print("Launch!");
+        //Gaze or normal mode
+        rayCaster.GetComponent<RayCaster>().Launch();
+
+        if (switched == false && reset == false)
         {
-            rayCaster.GetComponent<RayCastDetect>().Launch();
+            //Laser mode
+            if (mode == LASER_MODE)
+            {
+                laserLauncher.GetComponent<Laser>().Launch();
+            }
+
+            //Cannon mode
+            else if (mode == CANNON_MODE)
+            {
+                cannonBallLauncher.GetComponent<CannonBallLauncher>().Launch();
+            }
         }
 
-        //Cannon mode
-        else if (mode == CANNON_MODE)
+        else
         {
-            cannonBallLauncher.GetComponent<CannonBallLauncher>().Launch();
+            switched = false;
         }
+        
+
     }
 
     //switch modes
-    void switchMode()
+    public void SwitchMode(int mode)
     {
-        //Change mode
-        if (mode < MAX)
-            mode++;
-        else
-            mode = 0;
+        switched = true;
+
+        this.mode = mode;
 
         //Update the mode settings
-        if (mode == NORMAL_MODE)
-            rayCaster.SetActive(false);
-        else if (mode == LASER_MODE)
-            rayCaster.SetActive(true);
-        else if (mode == CANNON_MODE)
-            rayCaster.SetActive(false);
+        if (this.mode == NORMAL_MODE)
+            laserLauncher.SetActive(false);
+        else if (this.mode == LASER_MODE)
+            laserLauncher.SetActive(true);
+        else if (this.mode == CANNON_MODE)
+            laserLauncher.SetActive(false);
+
+    }
+
+    public void resetScene()
+    {
+        Destroy(GameObject.Find("BrickParent(Clone)"));
+        BrickSpawner.GetComponent<BrickSpawner>().SpawnBricks();
+        reset = false;
+        print("reset");
     }
     
     //dwell coroutine
