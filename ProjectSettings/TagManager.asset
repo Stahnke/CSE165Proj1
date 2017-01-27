@@ -7,6 +7,7 @@ TagManager:
   - brick
   - switchBox
   - resetPlane
+  - teleportPlane
   layers:
   - Default
   - TransparentFX

@@ -32,6 +32,8 @@ public class BrickSpawner : MonoBehaviour {
             {
                 GameObject brick = Instantiate(brickPrefab, spawnerChildTrans.position, spawnerParentTrans.rotation);
                 brick.transform.parent = brickParent.transform;
+                Color brickColor = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0, 1.0f));
+                brick.GetComponent<Renderer>().material.color = brickColor;
                 spawnerParentTrans.Rotate(0.0f, ROTATION, 0.0f, Space.Self);
                 
             }

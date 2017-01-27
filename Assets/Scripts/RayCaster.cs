@@ -7,6 +7,8 @@ public class RayCaster : MonoBehaviour {
     RaycastHit hit;
     GameObject otherObject;
 
+    public GameObject eventText;
+
     public bool Launch() {
 
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
@@ -21,11 +23,21 @@ public class RayCaster : MonoBehaviour {
                 {
                     int mode = otherObject.GetComponent<ModeBox>().Switch();
                     GetComponentInParent<InputManager>().SwitchMode(mode);
+                    eventText.GetComponent<EventText>().UpdateText("Switched modes");
                     return true;
                 }
                 else if(otherObject.CompareTag("resetPlane"))
                 {
                     GetComponentInParent<InputManager>().resetScene();
+
+                    eventText.GetComponent<EventText>().UpdateText("Scene reset");
+                    return true;
+                }
+
+                else if(otherObject.CompareTag("teleportPlane"))
+                {
+                    GetComponentInParent<Teleporter>().Teleport(hit.point);
+                    return true;
                 }
             }
         }

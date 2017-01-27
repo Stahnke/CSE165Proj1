@@ -6,6 +6,7 @@ public class Laser : MonoBehaviour {
 
     RaycastHit hit;
     GameObject otherObject;
+    public GameObject eventText;
 
     public void Launch()
     {
@@ -23,6 +24,8 @@ public class Laser : MonoBehaviour {
                 {
                     Destroy(otherObject);
                     otherObject = null;
+
+                    eventText.GetComponent<EventText>().UpdateText("Destroyed Brick!");
                 }
             }
         }

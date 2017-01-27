@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour {
 
@@ -8,6 +9,8 @@ public class InputManager : MonoBehaviour {
     public GameObject laserLauncher;
     public GameObject rayCaster;
     public GameObject BrickSpawner;
+    public GameObject gazeSlider;
+    public Text modeText;
 
     private int mode = 0;
 
@@ -16,7 +19,7 @@ public class InputManager : MonoBehaviour {
     private const int LASER_MODE = 1;
     private const int CANNON_MODE = 2;
 
-    private bool reset;
+    private bool eventOccurred;
     private bool switched;
 
     private IEnumerator dwellRoutine;
@@ -24,8 +27,8 @@ public class InputManager : MonoBehaviour {
     //init
     private void Start()
     {
-        reset = false;
-        laserLauncher.SetActive(false);
+        eventOccurred = false;
+        SwitchMode(NORMAL_MODE);
 
         dwellRoutine = Dwell();
         StartCoroutine(dwellRoutine);
@@ -36,9 +39,9 @@ public class InputManager : MonoBehaviour {
     {
         //print("Launch!");
         //Gaze or normal mode
-        rayCaster.GetComponent<RayCaster>().Launch();
+        eventOccurred = rayCaster.GetComponent<RayCaster>().Launch();
 
-        if (switched == false && reset == false)
+        if (eventOccurred == false)
         {
             //Laser mode
             if (mode == LASER_MODE)
@@ -53,36 +56,41 @@ public class InputManager : MonoBehaviour {
             }
         }
 
-        else
-        {
-            switched = false;
-        }
-        
-
+        else eventOccurred = false;
     }
 
     //switch modes
     public void SwitchMode(int mode)
     {
-        switched = true;
-
         this.mode = mode;
 
         //Update the mode settings
         if (this.mode == NORMAL_MODE)
+        {
+            modeText.text = "Normal Mode";
+            modeText.color = new Color(0.0f, 0.5f, 1.0f);
             laserLauncher.SetActive(false);
+        }
+            
         else if (this.mode == LASER_MODE)
+        {
+            modeText.text = "Laser Mode";
+            modeText.color = new Color(0.0f, 0.6f, 0.4f);
             laserLauncher.SetActive(true);
+        }
+            
         else if (this.mode == CANNON_MODE)
+        {
+            modeText.text = "Cannon Mode";
+            modeText.color = new Color(1.0f, 0.0f, 0.0f);
             laserLauncher.SetActive(false);
-
+        } 
     }
 
     public void resetScene()
     {
         Destroy(GameObject.Find("BrickParent(Clone)"));
         BrickSpawner.GetComponent<BrickSpawner>().SpawnBricks();
-        reset = false;
         print("reset");
     }
     
@@ -97,9 +105,11 @@ public class InputManager : MonoBehaviour {
 
         while (true)
         {
+            
             //update the time
             yield return new WaitForSeconds(waitTime);
             curTime += waitTime;
+            gazeSlider.GetComponent<GazeSlider>().UpdateSlider(curTime / 2.0f);
 
             //didn't break threshhold since last update
             if (Mathf.Abs(startRot.x - gameObject.transform.rotation.x) <= threshhold

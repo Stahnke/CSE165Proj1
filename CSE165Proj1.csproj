@@ -90,10 +90,13 @@
     <Compile Include="Assets\Scripts\BrickSpawner.cs" />
     <Compile Include="Assets\Scripts\CannonBallLauncher.cs" />
     <Compile Include="Assets\Scripts\DestroyAfterTime.cs" />
+    <Compile Include="Assets\Scripts\EventText.cs" />
+    <Compile Include="Assets\Scripts\GazeSlider.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\Laser.cs" />
     <Compile Include="Assets\Scripts\ModeBox.cs" />
     <Compile Include="Assets\Scripts\RayCaster.cs" />
+    <Compile Include="Assets\Scripts\Teleporter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

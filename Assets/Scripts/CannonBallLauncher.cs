@@ -8,6 +8,7 @@ public class CannonBallLauncher : MonoBehaviour {
     public AudioClip cannonSound;
     public Transform cannonBallSpanwerTrans;
     public float launchForce = 50000.0f;
+    public GameObject eventText;
 
     public void Launch()
     {
@@ -17,5 +18,7 @@ public class CannonBallLauncher : MonoBehaviour {
         cannonBall.GetComponent<Rigidbody>().AddForce(transform.forward * launchForce);
         //Play sound effect
         gameObject.GetComponent<AudioSource>().PlayOneShot(cannonSound);
+
+        eventText.GetComponent<EventText>().UpdateText("Cannonball shot!");
     }
 }
